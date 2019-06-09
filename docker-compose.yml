@@ -1,0 +1,58 @@
+version: '3'
+services:
+  postgres:
+    # Go to hub.docker.com and use explore to find image "postres official"
+    # Under Full Description
+    restart: always
+    image: 'postgres:latest'
+  redis:
+    image: 'redis:latest'
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '3050:80'
+  # instead of using "server:" we'll use "api:" to avoid keyword server
+  api:
+    build:
+      #dockerfile: is just the file name, not folder location
+      dockerfile: Dockerfile.dev
+      #Use all files in this folder and it's also where Dockerfile.dev is
+      context: ./server
+    volumes:
+      - /app/node_modules  # Leave this folder alone. Don't write to it or redirect anything to it
+      #copy everything in the server folder to the app folder except node_modules
+      #everytime our application tries to access anything inside the app directory,
+      # inside the container, except for the node_modules folder, it will
+      #  be redirected back to the server directory inside our current project folder. Any changes
+      #  to anything inside that server will be automatically be reflected inside the 
+      #  app folder of our container and so we won't have to rebuild our image any time we make
+      #  a little change to our source code
+      - ./server:/app
+    environment:
+      - REDIS_HOST=redis  #Just specify the service name
+      - REDIS_PORT=6379
+      - PGUSER=postgres
+      - PGHOST=postgres #service name
+      - PGDATABASE=postgres
+      - PGPASSWORD=postgres_password
+      - PGPORT=5432
+  client:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./client
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+  worker:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./worker
+    volumes:
+      - /app/node_modules
+      - ./worker:/app
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
