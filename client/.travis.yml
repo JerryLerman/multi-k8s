@@ -1,0 +1,24 @@
+sudo: required
+service:
+  - docker
+
+ before_install:
+  - docker build -t jerrylerman/react-test -f ./client/Dockerfile.dev ./client
+
+# This is the main script running section. These all must pass (status code 0)
+script:
+  - docker run jerrylerman/react-test npm test -- --watchAll=false
+
+after_success:
+  - docker build -t jerrylerman/multi-client ./client
+  - docker build -t jerrylerman/multi-nginx ./nginx
+  - docker build -t jerrylerman/multi-server ./server
+  - docker build -t jerrylerman/nulti-worker ./worker
+  # Log in to the docker CLI. Encrypt user credentials at TravisCI
+  # Go to the section on multi-docker and go into settings
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take images and push them to docker hub
+  - docker push jerrylerman/multi-client
+  - docker push jerrylerman/multi-nginx
+  - docker push jerrylerman/multi-server
+  - docker push jerrylerman/multi-worker
