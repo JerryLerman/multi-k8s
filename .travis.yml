@@ -10,7 +10,7 @@ sudo: required
 
 # This is the main script running section. These all must pass (status code 0)
 script:
-  - docker run -e CI=true jerrylerman/react-test npm run test -- --watchAll=false
+  - docker run -e CI=true jerrylerman/react-test npm test -- --watchAll=false
 
 after_success:
   - docker build -t jerrylerman/multi-client ./client
