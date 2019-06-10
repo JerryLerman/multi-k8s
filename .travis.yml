@@ -5,7 +5,7 @@ services:
 
 sudo: required
 
- before_install:
+before_install:
   - docker build -t jerrylerman/react-test -f ./client/Dockerfile.dev ./client
 
 # This is the main script running section. These all must pass (status code 0)
