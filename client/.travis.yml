@@ -1,14 +1,16 @@
-sudo: required
-language: generic
+language: node_js
+
 services:
   - docker
+
+sudo: required
 
  before_install:
   - docker build -t jerrylerman/react-test -f ./client/Dockerfile.dev ./client
 
 # This is the main script running section. These all must pass (status code 0)
 script:
-  - docker run -e CI=true jerrylerman/react-test npm test -- --watchAll=false
+  - docker run -e CI=true jerrylerman/react-test npm run test -- --watchAll=false
 
 after_success:
   - docker build -t jerrylerman/multi-client ./client
