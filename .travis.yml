@@ -16,7 +16,7 @@ after_success:
   - docker build -t jerrylerman/multi-client ./client
   - docker build -t jerrylerman/multi-nginx ./nginx
   - docker build -t jerrylerman/multi-server ./server
-  - docker build -t jerrylerman/nulti-worker ./worker
+  - docker build -t jerrylerman/multi-worker ./worker
   # Log in to the docker CLI. Encrypt user credentials at TravisCI
   # Go to the section on multi-docker and go into settings
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
