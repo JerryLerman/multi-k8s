@@ -1,0 +1,29 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: ingress-nginx
+  namespace: ingress-nginx
+  labels:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+spec:
+  externalTrafficPolicy: Local
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+  ports:
+    - name: http
+      # Change port to 31515
+      port: 80
+      #port: 31515
+      targetPort: http
+      nodePort: 31515
+    - name: https
+      # Change port to 31516
+      port: 443
+      #port: 31516
+      targetPort: https
+      nodePort: 31516
+
+---

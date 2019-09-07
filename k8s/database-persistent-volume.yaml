@@ -1,0 +1,15 @@
+# To overcome the CrashLoopBack error in Windows 10 Pro
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: database-persistent-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt"

@@ -1,0 +1,20 @@
+#Create the deployment with 3 child pods running the "multi-client" image
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: web
+  template:
+    metadata:
+      labels:
+        component: web
+    spec:
+      containers:
+        - name: client
+          image: jerrylerman/multi-client
+          ports:
+            - containerPort: 3000
