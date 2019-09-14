@@ -24,7 +24,7 @@ spec:
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
-              subPath: postgres
+              # subPath: postgres Caused "Does not have minimum availability" in GC
           env:
             - name: PGPASSWORD
               valueFrom:
