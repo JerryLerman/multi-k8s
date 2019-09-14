@@ -19,8 +19,6 @@ spec:
           ports:
             - containerPort: 5000
           env:
-            - name: PGDATA
-              value: /var/lib/postgresql/data/postgres
             - name: REDIS_HOST
               value: redis-cluster-ip-service
             - name: REDIS_PORT
