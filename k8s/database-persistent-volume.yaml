@@ -12,4 +12,6 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt"
+  # Changed this  based on https://severalnines.com/database-blog/using-kubernetes-deploy-postgresql
+    #path: "/mnt"
+    path: "/mnt/data"
