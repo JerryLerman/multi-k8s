@@ -12,6 +12,8 @@ spec:
       labels:
         component: postgres
     spec:
+      securityContext:
+        fsGroup: 1000
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
