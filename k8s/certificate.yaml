@@ -1,0 +1,23 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  # Reasonable to use the domain as a name and add tls to make clear this is for a tls certificate
+  name: lerman-development-com-tls
+spec:
+  secretName: lerman-development-com
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  # This is the name that will go onto the certificate
+  commonName: lerman-development.com
+  # Names that should be associated with the certificate
+  dnsNames:
+    - lerman-development.com
+    - www.lerman-development.com
+  acme:
+    config:
+      - http01:
+          ingressClass:  nginx
+        domains:
+          - lerman-development.com
+          - www.lerman-development.com
