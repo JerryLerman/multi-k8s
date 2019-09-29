@@ -30,12 +30,14 @@ spec:
         paths:
           #If the route is / by itself, or anything other than /api then send the
           # request  to whatever pods are governed by the client-cluster-ip-service service
-          - path: /?(.*)
+          #- path: /?(.*)
+          - path: /
             backend:
               # This is the multi-client pod
               serviceName: client-cluster-ip-service
               servicePort: 3000
-          - path: /api/?(.*)
+          #- path: /api/?(.*)
+          - path: /api/
             backend:
               # This is the multi-server pod
               serviceName: server-cluster-ip-service
@@ -46,12 +48,14 @@ spec:
         paths:
           #If the route is / by itself, or anything other than /api then send the
           # request  to whatever pods are governed by the client-cluster-ip-service service
-          - path: /?(.*)
+          #- path: /?(.*)
+          - path: /
             backend:
               # This is the multi-client pod
               serviceName: client-cluster-ip-service
               servicePort: 3000
-          - path: /api/?(.*)
+          #- path: /api/?(.*)
+          - path: /api/
             backend:
               # This is the multi-server pod
               serviceName: server-cluster-ip-service
