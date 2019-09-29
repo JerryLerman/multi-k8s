@@ -11,9 +11,37 @@ metadata:
     # This rule configures specifically how our copy of nginx behaves
     # This removes the /api and then sends the request to the server
     nginx.ingress.kubernetes.io/rewrite-target: /$1
+    # added these for the certficate
+    certmanager.k8s.io/cluster-issuer: 'letsencrypt-prod'
+    # force users to use https
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
 spec:
+  #Add tls rules for the certificate we added
+  tls:
+    - hosts:
+        - lerman-development.com
+        - www.lerman-development.com
+      secretName: lerman-development-com
   rules:
-    - http:
+    # This was added for https. It says if someone comes into lerman-development.com these are the rules to use
+    - host: lerman-development.com
+      http:
+        #There are 2 possible paths that we can match traffic to
+        paths:
+          #If the route is / by itself, or anything other than /api then send the
+          # request  to whatever pods are governed by the client-cluster-ip-service service
+          - path: /?(.*)
+            backend:
+              # This is the multi-client pod
+              serviceName: client-cluster-ip-service
+              servicePort: 3000
+          - path: /api/?(.*)
+            backend:
+              # This is the multi-server pod
+              serviceName: server-cluster-ip-service
+              servicePort: 5000
+    - host: www.lerman-development.com
+      http:
         #There are 2 possible paths that we can match traffic to
         paths:
           #If the route is / by itself, or anything other than /api then send the
